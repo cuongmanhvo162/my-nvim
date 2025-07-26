@@ -16,20 +16,7 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-{
-	"ray-x/go.nvim",
-	dependencies = {   
-	  "ray-x/guihua.lua",
-	  "neovim/nvim-lspconfig",
-	  "nvim-treesitter/nvim-treesitter",},
-	config = function()
-	require("go").setup()
-	end,
-	event = {"CmdlineEnter"},
-	ft = {"go", 'gomod'},
-	build = ':lua require("go.install").update_all_sync()'
-}, 
-{
+{	
 	"nvim-tree/nvim-tree.lua",
 	version = "*",
 	lazy = false,
@@ -49,29 +36,28 @@ require("lazy").setup({
 	"judaew/ronny.nvim",
 	priority = 1000,
 	config = function()
-	    vim.cmd.colorscheme("ronny")
-	    require("ronny").setup()
+		vim.cmd.colorscheme("ronny")
+		require("ronny").setup()
 	end
 }, 
 {
 	'unblevable/quick-scope',
 },
 {
-	'stevearc/conform.nvim',
-	opts = {},
-} 
+	"nvim-telescope/telescope.nvim",
+	dependencies = { "nvim-lua/plenary.nvim" },
+	config = function()
+	  require("telescope").setup({})
+	end,
+},
+{
+	"smartpde/telescope-recent-files",
+	dependencies = { "nvim-telescope/telescope.nvim" },
+	config = function()
+	  require("telescope").load_extension("recent_files")
+	end,
+},
 }, opts)
-require("conform").setup({
-  formatters_by_ft = {
-    lua = { "stylua" },
-    -- Conform will run multiple formatters sequentially
-    python = { "isort", "black" },
-    -- Use a sub-list to run only the first available formatter
-    javascript = { { "prettierd", "prettier" } },
-  },
-})
-
-require("go").setup()
 
 vim.wo.relativenumber = true
 vim.wo.number = true
